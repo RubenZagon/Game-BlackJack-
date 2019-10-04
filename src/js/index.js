@@ -89,38 +89,39 @@ console.log(`%cCartas del jugador: ${cardsPlayer}`,'background:' + colorPlayer);
 console.log(`%cCartas del crupier: ${cardsCrupier}`, 'background:' + colorCrupier);
 console.log(`Tamaño de la baraja actual: ${deckForPlay.length}`);
 
-// #############################################  PRUEBAS
+// #############################################  CALCULO DE PUNTUACIÓN
+/**
+ * 
+ * Aquí me funciona ahora mismo el que me sume el contenido del Array si tiene números, pero ahora tengo que hacer que cuando lea 'J', 'Q', 'K' los tome como 10 de valor.
+ * 
+ */
 
-// probar a quitar el palo mediante un RegExp
-const encontrarNumeros = (array) => {
-    let regext = RegExp('\d','g');
+let pointsPlayer = 0;
 
-    let encontrado = regext.exec(array)
-    console.log(`entontré esto: ${encontrado}`);
-return
+let separar = (array) =>{
+  //recorrer el array o que nos de el elemento index primero del string
+  let conjunto = [];
+
+  for (i = 0; i < cardsPlayer.length ; i++) {
+
+    let numb = parseInt(cardsPlayer[i].substr(0, 1));
+      conjunto.push(numb);
+  }
+  return conjunto
 }
-let text = 'ora que tal 2113';
-encontrarNumeros(text); // Sin buenos resultados
 
-// Probar a sumar solo los números del array
-const reducer = (accumulator, currentValue) => {
-    parseInt(accumulator) + parseInt(currentValue);
+let sumarArray = (arrayASumar) => {
+  let add = 0;
+
+  for (i = 0 ; i < arrayASumar.length; i++) {
+    add = add + arrayASumar[i];
+  }
+  return add;
 }
-    console.log(cardsPlayer.reduce(reducer));  //No coge bien los números porque estan acompañados de los palos
 
-// Probar usar función .find para encontrar solo los números y separarlos del Array
-var found = cardsPlayer.find(function(element) {
-    return element > 'JC';
-});
+pointsPlayer = sumarArray(separar(cardsPlayer));
 
-console.log(found); // Te devuelve el elemento completo,sin separar
+console.log(pointsPlayer);
 
 // #################################################   
- 
-const addOfCards = (cards) => {
-    let add = 0;
-    for (i = 0; i < cards.length; i ++){
-
-    }
-}
 
