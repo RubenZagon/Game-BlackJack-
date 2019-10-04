@@ -4,7 +4,7 @@
   "description": "Game of the black jack, enjoy it!",
   "main": "index.js",
   "scripts": {
-    "dev": "parcel index.html"
+    "dev": "parcel index.html --open"
   },
   "author": "Ruben Zagon",
   "license": "ISC",
