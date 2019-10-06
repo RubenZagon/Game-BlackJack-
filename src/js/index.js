@@ -58,5 +58,31 @@ const deck = () => {
   
   }
   
-  console.log(deck());
+  const card = (card) => {
+    this.getRank = () => {
+      return card.rank;
+    }
+  
+    this.getStick = () => {
+      return card.stick;
+    }
+    this.getValue = () => {
+      let rank = this.getRank();
+      let value = 0;
+  
+      if (rank === 'A'){
+        value = 11;
+      }else if (rank === 'J'){
+        value = 10;
+      }else if (rank === 'Q'){
+        value = 10;
+      }else if (rank === 'K'){
+        value = 10;
+      }else{
+        value = parseInt(rank);
+      }
+  
+    return value;
+    }
+  };
   
