@@ -16,6 +16,15 @@ A = 1/11 (Si estoy por menos de 10 vale 11 y si estas por más de 10 entonces va
 // Generar baraja
 // ['1C', '5P', '7T' .....]
 
+/**
+ * ####################################
+ * New refactor based on this codepen
+ * 
+ * https://codepen.io/Clowerweb/pen/cdDqA
+ * ####################################
+ */
+
+
 
 
 const deck = () => {
