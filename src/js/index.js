@@ -27,9 +27,9 @@ A = 1/11 (Si estoy por menos de 10 vale 11 y si estas por más de 10 entonces va
 
 class Card {
     constructor(rank, stick, value) {
-      rank = "",
-      stick = "",
-      value = 0
+      this.rank = "",
+      this.stick = "",
+      this.value = 0
     }
 
     RANKS = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'],
@@ -38,7 +38,7 @@ class Card {
 
   let card = new Card();
 
-  console.log (card.RANKS);
+  console.log (card.rank);
 
 
 
