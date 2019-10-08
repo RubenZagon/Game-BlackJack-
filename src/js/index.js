@@ -22,67 +22,72 @@ A = 1/11 (Si estoy por menos de 10 vale 11 y si estas por más de 10 entonces va
  * 
  * https://codepen.io/Clowerweb/pen/cdDqA
  * ####################################
+ * 
  */
 
+class Card{
 
+    rank;
+    stick;
 
+    constructor(Rank,Stick){
+        this.rank = Rank;
+        this.stick = Stick;
+    }
 
-const deck = () => {
-    const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
-    const sticks = ["C", "P", "R", "T"]; 
-    let deck = [];
-  
-    this.getDeck = () =>{
-      return this.setDeck();
-    } 
-  
-    this.setDeck = () => {
-      for (i = 0; i < ranks.length; i++) {
-        for (j = 0; j < sticks.length; j++){
-          
-          let card = new Card({ //Declaramos el objeto carta
-            'rank': ranks[i]
-          });
-  
-          deck.push({ // Le definimos a cada carta un rango, un palo y un valor númerico para luego procesorlo en la puntuación.
-            'rank': ranks[i],
-            'stick': sticks[j],
-            'value': card.getValue()
-  
-          });
+    getRank = () => {
+        return this.rank;
+    }
+    
+    getStick = () => {
+        return this.stick;
+    }
+    
+
+}
+
+class Deck {
+
+    RANKS = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+    STICKS = ["C", "P", "R", "T"]; 
+
+    getValue(card){
+        let rank = card.getRank();
+        let value = 0;
+    
+        if (rank === 'A'){
+            value = 11;
+        }else if (rank === 'J'){
+            value = 10;
+        }else if (rank === 'Q'){
+            value = 10;
+        }else if (rank === 'K'){
+            value = 10;
+        }else{
+            value = parseInt(rank);
         }
-  
-       return deck;
-      }
-    };
-  
-  }
-  
-  const card = (card) => {
-    this.getRank = () => {
-      return card.rank;
-    }
-  
-    this.getStick = () => {
-      return card.stick;
-    }
-    this.getValue = () => {
-      let rank = this.getRank();
-      let value = 0;
-  
-      if (rank === 'A'){
-        value = 11;
-      }else if (rank === 'J'){
-        value = 10;
-      }else if (rank === 'Q'){
-        value = 10;
-      }else if (rank === 'K'){
-        value = 10;
-      }else{
-        value = parseInt(rank);
-      }
-  
+    
     return value;
     }
-  };
-  
+
+    getDeck(){
+        let deck = [];
+
+        for (let i = 0; i < this.RANKS.length; i++) {
+            for (let j = 0; j < this.STICKS.length; j++){
+                let card = new Card(this.RANKS[i],this.STICKS[j]);
+                deck.push({
+                    'card': card,
+                    'value': this.getValue(card)
+                });
+            }
+        }
+        return deck;
+    };
+};
+
+const gameDeck = new Deck().getDeck()
+
+
+
+console.log (gameDeck);
