@@ -16,6 +16,48 @@ A = 1/11 (Si estoy por menos de 10 vale 11 y si estas por más de 10 entonces va
 // Generar baraja
 // ['1C', '5P', '7T' .....]
 
+/**
+ * ################################
+ * ################################
+ *      NUEVO COMIENZO HACIENDO CLASES
+ * ################################
+ * ################################
+ * 
+ */
+
+class Card {
+    constructor(rank, stick, value) {
+      rank = "",
+      stick = "",
+      value = 0
+    }
+
+    RANKS = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'],
+    STICKS = ['♥','♠','♦','♣']
+}
+
+  let card = new Card();
+
+  console.log (card.RANKS);
+
+
+
+
+
+
+
+ /**
+ * ################################
+ * ################################
+ *      ANTIGUO MÉTODO
+ * ################################
+ * ################################
+ * 
+ */
+/*
+
+
+
 const sticks = ["C", "P", "R", "T"];
 
 const generateRange = () => {
@@ -96,6 +138,8 @@ console.log(`Tamaño de la baraja actual: ${deckForPlay.length}`);
  * 
  */
 
+
+ /*
 let pointsPlayer = 0;
 
 let separar = (array) =>{
@@ -125,3 +169,4 @@ console.log(pointsPlayer);
 
 // #################################################   
 
+*/
