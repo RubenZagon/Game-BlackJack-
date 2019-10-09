@@ -16,15 +16,6 @@ A = 1/11 (Si estoy por menos de 10 vale 11 y si estas por más de 10 entonces va
 // Generar baraja
 // ['1C', '5P', '7T' .....]
 
-/**
- * ################################
- * ################################
- *      NUEVO COMIENZO HACIENDO CLASES
- * ################################
- * ################################
- * 
- */
-
 const RANKS = ['A','2','3','4','5','6','7','8','9','10','J','Q','K']
 const STICKS = ['♥','♠','♦','♣']
 
@@ -32,6 +23,10 @@ class Card {
     constructor(r = '', s = '') {
       this.rank = r,
       this.stick = s
+    }
+
+    getRank () {
+      return this.rank
     }
 }
 
@@ -82,8 +77,11 @@ class Deck {
 
 
 let deck = new Deck(),
-    gameDeck = deck.generateDeck()
+    gameDeck = deck.generateDeck(),
+    someCard = gameDeck.pop()
 
 console.log(gameDeck)
+console.log(`Some card: ${someCard.rank}`)
+console.log(someCard)
 
 
