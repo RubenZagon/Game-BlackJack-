@@ -34,25 +34,20 @@ class Card{
         this.rank = Rank;
         this.stick = Stick;
     }
-
-    getRank = () => {
-        return this.rank;
-    }
-    
-    getStick = () => {
-        return this.stick;
-    }
-    
-
 }
 
 class Deck {
 
-    RANKS = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
-    STICKS = ["C", "P", "R", "T"]; 
+    RANKS;
+    STICKS;
+    
+    constructor(Ranks, Sticks){
+        this.RANKS = Ranks
+        this.STICKS = Sticks
+    }
 
     getValue(card){
-        let rank = card.getRank();
+        let rank = card.rank;
         let value = 0;
     
         if (rank === 'A'){
@@ -70,14 +65,15 @@ class Deck {
     return value;
     }
 
-    getDeck(){
+    // This can be understand like factory method
+    createDeck(){
         let deck = [];
 
         for (let i = 0; i < this.RANKS.length; i++) {
             for (let j = 0; j < this.STICKS.length; j++){
                 let card = new Card(this.RANKS[i],this.STICKS[j]);
                 deck.push({
-                    'card': card,
+                    card,
                     'value': this.getValue(card)
                 });
             }
@@ -86,8 +82,15 @@ class Deck {
     };
 };
 
-const gameDeck = new Deck().getDeck()
+pokerRank = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+pokerSticks = ["C", "P", "R", "T"]; 
 
+const PockerDeck = new Deck(pokerRank,pokerSticks)
 
+const gameDeck = PockerDeck.createDeck()
 
-console.log (gameDeck);
+console.log("DECK\n")
+console.log(gameDeck)
+console.log("SOME CARD\n")
+console.log(gameDeck[1].card)
+console.log("\n")
