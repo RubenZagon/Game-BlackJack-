@@ -1,4 +1,4 @@
-class Card{
+export class Card{
 
     rank;
     stick;
@@ -7,14 +7,4 @@ class Card{
         this.rank = Rank;
         this.stick = Stick;
     }
-
-    getRank = () => {
-        return this.rank;
-    }
-    
-    getStick = () => {
-        return this.stick;
-    }
-    
-
 }

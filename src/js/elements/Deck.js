@@ -1,7 +1,14 @@
-class Deck {
+import { Card } from './Card'
 
-    RANKS = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
-    STICKS = ["C", "P", "R", "T"]; 
+export class Deck {
+
+    RANKS;
+    STICKS;
+    
+    constructor(Ranks, Sticks){
+        this.RANKS = Ranks
+        this.STICKS = Sticks
+    }
 
     getValue(card){
         let rank = card.getRank();
@@ -22,14 +29,14 @@ class Deck {
     return value;
     }
 
-    getDeck(){
+    createDeck(){
         let deck = [];
 
         for (let i = 0; i < this.RANKS.length; i++) {
             for (let j = 0; j < this.STICKS.length; j++){
                 let card = new Card(this.RANKS[i],this.STICKS[j]);
                 deck.push({
-                    'card': card,
+                    card,
                     'value': this.getValue(card)
                 });
             }
