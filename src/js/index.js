@@ -25,28 +25,42 @@ A = 1/11 (Si estoy por menos de 10 vale 11 y si estas por más de 10 entonces va
  * 
  */
 
+const RANKS = ['A','2','3','4','5','6','7','8','9','10','J','Q','K']
+const STICKS = ['♥','♠','♦','♣']
+
 class Card {
-    constructor(rank, stick, value) {
-      this.rank = "",
-      this.stick = "",
-      this.value = 0
+    constructor(r = '', s = '', v = 0) {
+      this.rank = r,
+      this.stick = s,
+      this.value = v
     }
 
-    RANKS = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'],
-    STICKS = ['♥','♠','♦','♣']
+    getRank () {
+      return card.rank
+    }
+
+    getStick () {
+      return card.stick
+    }
+
+
 }
 
-  let card = new Card();
-
-  console.log (card.rank);
-
+let randomRa = Math.floor(Math.random() * RANKS.length),
+    randomSti = Math.floor(Math.random() * STICKS.length)
 
 
+  let card = new Card(RANKS[randomRa], STICKS[randomSti]);
+
+  console.log (card.getRank() + ' ' + card.getStick());
 
 
 
 
- /**
+
+
+
+/**
  * ################################
  * ################################
  *      ANTIGUO MÉTODO
