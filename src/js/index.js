@@ -35,26 +35,42 @@ class Card {
       this.value = v
     }
 
-    getRank () {
-      return card.rank
-    }
-
-    getStick () {
-      return card.stick
-    }
-
 
 }
-
+/*
 let randomRa = Math.floor(Math.random() * RANKS.length),
     randomSti = Math.floor(Math.random() * STICKS.length)
 
 
   let card = new Card(RANKS[randomRa], STICKS[randomSti]);
 
-  console.log (card.getRank() + ' ' + card.getStick());
+  console.log (card.rank + ' ' + card.stick);
+*/
+
+class Deck {
+  constructor(b){
+    this.deck = b
+  }
+
+}
 
 
+generateDeck = () => {
+  let deck = [];
+
+  for (var i = 0; i < STICKS.length; i++) {
+    for (var j = 0; j < RANKS.length; j++) {
+      let card = new Card(RANKS[j], STICKS[i]);
+      deck.push(card);
+    }
+  }  
+
+  return deck;
+}
+
+let deck = new Deck(generateDeck())
+
+console.log(deck)
 
 
 
