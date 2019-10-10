@@ -16,84 +16,23 @@ A = 1/11 (Si estoy por menos de 10 vale 11 y si estas por más de 10 entonces va
 // Generar baraja
 // ['1C', '5P', '7T' .....]
 
-const RANKS = ['A','2','3','4','5','6','7','8','9','10','J','Q','K']
-const STICKS = ['♥','♠','♦','♣']
+import {Deck} from './Elements/deck.js'
 
-class Card {
-    constructor(r = '', s = '') {
-      this.rank = r,
-      this.stick = s
-    }
-
-    getRank () {
-      return this.rank
-    }
-}
-
-class Deck {
-  constructor(b){
-    this.deck = b
+class Player {
+  constructor(hand){
+    hand  = hand
   }
 
-  setValue (card) {
-    let rank = card.rank
-    let  value = 0
-    
-    switch (rank) {
-      case 'A':
-        value = 11
-        break
-      case 'J':
-        value = 10
-        break
-      case 'Q':
-        value = 10
-        break
-      case 'K':
-        value = 10
-        break
-      default:
-        value = parseInt(rank)
-    }
-    return value
-  }
-
-  generateDeck () {
-    let deck = [];
+  pickCard (deckShuffled){
   
-    for (var i = 0; i < STICKS.length; i++) {
-      for (var j = 0; j < RANKS.length; j++) {
-        let card = new Card(RANKS[j]);
-        deck.push({ //Tengo que hacerlo así para poder leer luego los valores de 'rank', 'stick', y 'value' sin que me salga undefined
-          'rank': RANKS[j],
-          'stick': STICKS[i],
-          'value': this.setValue(card)
-        });
-      }
-    }  
-    return deck;
   }
-
-  shuffle () {
-    let deck = this.generateDeck()
-    let shuffled = []
-    
-
-    while(deck.length > 0) {
-      let randomPosition = Math.floor(Math.random() * deck.length)
-      
-      shuffled.unshift(deck[randomPosition])
-      deck.splice(randomPosition, 1)
-    }
-    return shuffled
-  }
-
 }
 
 
 let deck = new Deck(),
     gameDeck = deck.shuffle()
-
+    
+/*       TESTING PARA VER EL DECK
 console.log(gameDeck)
 
 let someCard = gameDeck.pop()
@@ -103,5 +42,5 @@ console.log(`Some card: ${someCard.rank}`)
 console.log(`Some card: ${someCard.stick}`)
 console.log(`Some card: ${someCard.value}`)
 console.log(someCard)
-
+*/
 
