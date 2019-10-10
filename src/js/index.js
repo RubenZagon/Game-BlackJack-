@@ -63,9 +63,10 @@ class Deck {
   
     for (var i = 0; i < STICKS.length; i++) {
       for (var j = 0; j < RANKS.length; j++) {
-        let card = new Card(RANKS[j], STICKS[i]);
-        deck.push({
-          card,
+        let card = new Card(RANKS[j]);
+        deck.push({ //Tengo que hacerlo así para poder leer luego los valores de 'rank', 'stick', y 'value' sin que me salga undefined
+          'rank': RANKS[j],
+          'stick': STICKS[i],
           'value': this.setValue(card)
         });
       }
@@ -73,15 +74,34 @@ class Deck {
     return deck;
   }
 
+  shuffle () {
+    let deck = this.generateDeck()
+    let shuffled = []
+    
+
+    while(deck.length > 0) {
+      let randomPosition = Math.floor(Math.random() * deck.length)
+      
+      shuffled.unshift(deck[randomPosition])
+      deck.splice(randomPosition, 1)
+    }
+    return shuffled
+  }
+
 }
 
 
 let deck = new Deck(),
-    gameDeck = deck.generateDeck(),
-    someCard = gameDeck.pop()
+    gameDeck = deck.shuffle()
 
 console.log(gameDeck)
+
+let someCard = gameDeck.pop()
+
+
 console.log(`Some card: ${someCard.rank}`)
+console.log(`Some card: ${someCard.stick}`)
+console.log(`Some card: ${someCard.value}`)
 console.log(someCard)
 
 
