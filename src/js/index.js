@@ -16,31 +16,43 @@ A = 1/11 (Si estoy por menos de 10 vale 11 y si estas por más de 10 entonces va
 // Generar baraja
 // ['1C', '5P', '7T' .....]
 
-import {Deck} from './Elements/deck.js'
-
-class Player {
-  constructor(hand){
-    hand  = hand
-  }
-
-  pickCard (deckShuffled){
-  
-  }
-}
+import { Deck } from './Elements/deck.js';
+import { Player } from './Elements/players.js';
 
 
-let deck = new Deck(),
-    gameDeck = deck.shuffle()
-    
-/*       TESTING PARA VER EL DECK
-console.log(gameDeck)
-
-let someCard = gameDeck.pop()
 
 
-console.log(`Some card: ${someCard.rank}`)
-console.log(`Some card: ${someCard.stick}`)
-console.log(`Some card: ${someCard.value}`)
-console.log(someCard)
+let player = new Player(),
+    crupier = new Player()
+
+
+
+
+//Comienzo del juego
+player.pickCard()
+player.pickCard()
+
+crupier.pickCard()
+
+console.log('Player')
+console.table(player.hand)
+console.log('Crupier')
+console.table(crupier.hand)
+
+console.log(`Total de cartas en deck: ${gameDeck.length}`)
+
+
+
+
+
+
+
+/*       TESTING PARA VER LA MANO DE LOS JUGADORES
+
+console.log(player.hand[0].rank)
+console.log(player.hand[0].stick)
+console.log(player.hand[0].value)
+
+
 */
 
