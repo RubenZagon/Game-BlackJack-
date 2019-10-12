@@ -9,6 +9,8 @@ gameDeck = deck.shuffle()
 let player = new Player(),
     crupier = new Player()
 
+let pointsPlayer, pointsCrupier
+
 //Comienzo del juego
 
 const firstRound = () => {
@@ -25,16 +27,25 @@ const watchPunctuation = (playerObj) => {
   let points = 0
 
   for (let i = 0; i < playerObj.hand.length; i++){
-    points += playerObj.hand[i].value
+    points = points + playerObj.hand[i].value
   }
   return points
 }
+
 
 //Preguntar al jugador si continuar o no
 const askPlayer = () => {
   let answer = 'y' //prompt('¿Pedir carta?: [y/n]', 'y')
   console.log(`Respuesta del jugador: ${answer}`)
-  if (answer === 'y'){player.pickCard(gameDeck)}
+
+  pointsPlayer = watchPunctuation(player)
+
+
+  if (answer === 'y' && pointsPlayer != 21){
+    player.pickCard(gameDeck)
+  } else {
+    console.log('%cJUGADOR se planta', 'background:green')
+  }
 }
 
 // ######   FUNCION DE SEGUIMIENTO    ########
@@ -48,34 +59,50 @@ const mostrarPuntuaciones = () => {
   console.log(`Tamaño de la baraja: ${gameDeck.length}`)
   
   // Mostrar puntuación de las cartas
+  pointsPlayer = watchPunctuation(player)
+  pointsCrupier = watchPunctuation(crupier)
   console.log (`Puntuacion del jugador: ${pointsPlayer}`)
   console.log (`Puntuacion del crupier: ${pointsCrupier}`)
 
 }
 
-const whoIsTheWinner = () => {
-  
+const notExceed21 = (playerValue) => {
+  if (playerValue <= 21){
+    return true
+  } else {
+    console.log('%cPierde JUGADOR por tener:' + pointsPlayer, 'background:red')
+  }
+}
+
+const whoIsTheWinner = (pointsPlayer, pointsCrupier) => {
+  if (pointsPlayer > pointsCrupier && notExceed21(pointsPlayer)){
+    console.log('%cGana JUGADOR', 'background:green')
+  }
 }
 
 
 firstRound()
 
-//test
-mostrarPuntuaciones()
-
-let pointsPlayer = watchPunctuation(player),
-    pointsCrupier = watchPunctuation(crupier)
-
-askPlayer()
-
 //test despues de preguntar
 mostrarPuntuaciones()
 
+console.log('---------   2º RONDA   ---------')
+askPlayer()
 
+console.log('Player')
+console.table(player.hand)
+console.log(`poinsPlayer despues de ask: ${pointsPlayer = watchPunctuation(player)}`)
 
+whoIsTheWinner(pointsPlayer, pointsCrupier)
 
+console.log('---------   3º RONDA   ---------')
+askPlayer()
 
-  //Si jugador continua, dar otra carta y valorar puntuación
+console.log('Player')
+console.table(player.hand)
+console.log(`poinsPlayer despues de ask: ${pointsPlayer = watchPunctuation(player)}`)
+
+whoIsTheWinner(pointsPlayer, pointsCrupier)
 
 
 
