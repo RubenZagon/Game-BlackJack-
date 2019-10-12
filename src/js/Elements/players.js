@@ -5,13 +5,10 @@ export class Player {
     this.hand  = h
     }
 
-    pickCard () {
+    pickCard (gameDeck) {
     let card = [],
         someCard = gameDeck.pop()
     
     this.hand.push(someCard)
     }
 }
-
-let deck = new Deck(),
-    gameDeck = deck.shuffle()

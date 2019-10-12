@@ -25,21 +25,23 @@ import { Player } from './Elements/players.js';
 let player = new Player(),
     crupier = new Player()
 
+  let deck = new Deck(),
+    gameDeck = deck.shuffle()
 
 
 
 //Comienzo del juego
-player.pickCard()
-player.pickCard()
+player.pickCard(gameDeck)
+player.pickCard(gameDeck)
 
-crupier.pickCard()
+crupier.pickCard(gameDeck)
 
 console.log('Player')
 console.table(player.hand)
 console.log('Crupier')
 console.table(crupier.hand)
 
-console.log(`Total de cartas en deck: ${gameDeck.length}`)
+console.log(`Tamaño de la baraja: ${gameDeck.length}`)
 
 
 
