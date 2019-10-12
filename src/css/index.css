@@ -1,0 +1,15 @@
+body {
+    background: lightgreen;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+button {
+    padding: 20px;
+    font-size: 15px;
+}
+
+.plantarse {
+    background: lightcoral;
+}
