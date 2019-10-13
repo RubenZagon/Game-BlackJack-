@@ -1,60 +1,141 @@
-// REGLAS DEL JUEGO
-// http://www.casino.es/blackjack/como-jugar-blackjack/
-
-//Los comentarios para hacer el seguimiento de los procesos están diseñados principalmente para usar la consola de Chrome
-
-// Crupier y jugador
-// Se reparten 2 cartas para el jugador y una para el crupier, si no llega a 21 le preguntas al jugador si quiere seguir o se planta. Y tu como crupier hacer los mismo.
-/*
-- generar cartas (2 - 9 - J Q K A) / barajar
-- Barajar
-- Repartir cartas
-- comprobar Puntuación
-A = 1/11 (Si estoy por menos de 10 vale 11 y si estas por más de 10 entonces vale 1)
-*/
-
-// Generar baraja
-// ['1C', '5P', '7T' .....]
-
 import { Deck } from './Elements/deck.js';
 import { Player } from './Elements/players.js';
 
 
 
+let deck = new Deck(),
+gameDeck = deck.shuffle()
 
 let player = new Player(),
     crupier = new Player()
 
-  let deck = new Deck(),
-    gameDeck = deck.shuffle()
+let pointsPlayer, pointsCrupier
+
+
+const containerCardsPlayer = document.querySelector('.cardsPlayer')
+
+const buttons = {
+  pedir: document.querySelector('.pedir'),
+  plantarse: document.querySelector('.plantarse')
+}
 
 
 
 //Comienzo del juego
-player.pickCard(gameDeck)
-player.pickCard(gameDeck)
+const firstRound = () => {
 
-crupier.pickCard(gameDeck)
+  player.pickCard(gameDeck)
+  player.pickCard(gameDeck)
 
-console.log('Player')
-console.table(player.hand)
-console.log('Crupier')
-console.table(crupier.hand)
+  player.renderCard(containerCardsPlayer)
 
-console.log(`Tamaño de la baraja: ${gameDeck.length}`)
+  crupier.pickCard(gameDeck)
 
-
-
-
-
+  pointsPlayer = watchPunctuation(player)
+  if (pointsPlayer == 21){
+    askPlayer()
+  }
+}
 
 
-/*       TESTING PARA VER LA MANO DE LOS JUGADORES
+//Valorar puntuación
+const watchPunctuation = (playerObj) => {
+  let points = 0
 
-console.log(player.hand[0].rank)
-console.log(player.hand[0].stick)
-console.log(player.hand[0].value)
+  for (let i = 0; i < playerObj.hand.length; i++){
+    points = points + playerObj.hand[i].value
+  }
+  return points
+}
+
+const playerPickCard = () => {
+  player.pickCard(gameDeck)
+  player.renderCard(containerCardsPlayer)
+  askPlayer()
+}
+
+//Preguntar al jugador si continuar o no
+const askPlayer = (yesOrNot) => {
+  let answer = yesOrNot
+  
+  console.log(`Respuesta del jugador: %c ${answer}`, 'color:orange')
+
+  pointsPlayer = watchPunctuation(player)
+  roundGame()
 
 
-*/
+  if (pointsPlayer == 21) {
+    console.log(`%c JUGADOR se planta por tener 21 `, 'background:black; color:white')
+    disabledBtn()
+  } if (answer == false ) {
+    console.log(`%c JUGADOR se planta con ${pointsPlayer} `, 'background:violet; color:teal')
+    disabledBtn()
+  } 
+}
+
+const disabledBtn = () => {
+  buttons.pedir.disabled = true;
+  buttons.plantarse.disabled = true;
+}
+
+const notExceed21 = (playerValue) => {
+  if (playerValue <= 21){
+    return true
+  } else {
+    console.log('%c  Pierde JUGADOR por tener:  ' + pointsPlayer, 'background:white; color: red; font-size: 12px')
+    disabledBtn()
+  }
+}
+
+const whoIsTheWinner = (pointsPlayer, pointsCrupier) => {
+  if (pointsPlayer > pointsCrupier && notExceed21(pointsPlayer)){
+    console.log('%c  Gana JUGADOR con: '+ pointsPlayer, 'background:white; color: green; font-size: 12px')
+  }
+}
+
+// ######   FUNCION DE SEGUIMIENTO    ########
+const mostrarPuntuaciones = () => {
+
+  console.log('Player')
+  console.table(player.hand)
+  console.log('Crupier')
+  console.table(crupier.hand)
+  
+  console.log(`Tamaño de la baraja: ${gameDeck.length}`)
+  
+  // Mostrar puntuación de las cartas
+  pointsPlayer = watchPunctuation(player)
+  pointsCrupier = watchPunctuation(crupier)
+  console.log (`Puntuacion del jugador: ${pointsPlayer}`)
+  console.log (`Puntuacion del crupier: ${pointsCrupier}`)
+
+}// ######  -FIN- FUNCION DE SEGUIMIENTO    ########
+
+
+const roundGame = () => {
+  
+  let colorGuion = 'color: orange; font-size: 14px'
+
+  console.log(`%c---------   SIGUIENTE RONDA   ---------`, colorGuion)
+  
+  //console.log('Player')
+  console.table(player.hand)
+  
+  whoIsTheWinner(pointsPlayer, pointsCrupier)
+  
+}
+
+
+firstRound()
+
+//test despues de preguntar
+mostrarPuntuaciones()
+
+const getCard = () => playerPickCard()
+const passTurn = () => askPlayer(false)
+
+buttons.pedir.addEventListener('click',getCard)
+buttons.plantarse.addEventListener('click', passTurn)
+
+
 
