@@ -14,3 +14,17 @@ button {
 .plantarse {
     background: lightcoral;
 }
+
+.card {
+    background: white;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 5px;
+    width: 60px;
+    height: 90px;
+    font-size: 2em;
+}
+
+.cardRed{
+    color:red
+}

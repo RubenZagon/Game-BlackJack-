@@ -1,4 +1,5 @@
 import { Deck } from './deck.js';
+import { Render } from './render.js'
 
 export class Player {
     constructor(h = []){

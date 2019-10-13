@@ -1,5 +1,6 @@
 import { Deck } from './Elements/deck.js';
 import { Player } from './Elements/players.js';
+import { Render } from './Elements/render.js'
 
 
 let deck = new Deck(),
@@ -9,6 +10,18 @@ let player = new Player(),
     crupier = new Player()
 
 let pointsPlayer, pointsCrupier
+
+
+//##### Pruebas renderizado de carta
+//['♥','♠','♦','♣']
+let containerCardsPlayer = document.querySelector('.cardsPlayer')
+let render = new Render('2','♦',containerCardsPlayer)
+console.log (render)
+
+render.renderCard()
+
+//##### FIN Pruebas renderizado de carta
+
 
 const buttons = {
   pedir: document.querySelector('.pedir'),
@@ -134,15 +147,4 @@ buttons.pedir.addEventListener('click',getCard)
 buttons.plantarse.addEventListener('click', passTurn)
 
 
-
-
-
-
-/*       TESTING PARA VER LA MANO DE LOS JUGADORES
-
-console.log(player.hand[0].rank)
-console.log(player.hand[0].stick)
-console.log(player.hand[0].value)
-
-*/
 
