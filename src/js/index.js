@@ -1,6 +1,6 @@
 import { Deck } from './Elements/deck.js';
 import { Player } from './Elements/players.js';
-import { Render } from './Elements/render.js'
+
 
 
 let deck = new Deck(),
@@ -12,43 +12,22 @@ let player = new Player(),
 let pointsPlayer, pointsCrupier
 
 
-//##### Pruebas renderizado de carta
-//['♥','♠','♦','♣']
-let containerCardsPlayer = document.querySelector('.cardsPlayer')
-let render = new Render('2','♦',containerCardsPlayer)
-console.log (render)
-
-render.renderCard()
-
-//##### FIN Pruebas renderizado de carta
-
+const containerCardsPlayer = document.querySelector('.cardsPlayer')
 
 const buttons = {
   pedir: document.querySelector('.pedir'),
   plantarse: document.querySelector('.plantarse')
 }
 
-const renderCardsInHTML = (player, divContainer) => {
-  let rank = player.rank,
-      stick = player.stick,
-      div = divContainer
-  
-  for (let i = 0; i < player.length; i++){
-    let cardRenderized = new Render (rank, stick, div)
-    
-    cardRenderized.renderCard()
-  }
-}
 
 
 //Comienzo del juego
-
 const firstRound = () => {
 
   player.pickCard(gameDeck)
   player.pickCard(gameDeck)
-  console.log(player)
-  renderCardsInHTML(player, containerCardsPlayer)
+
+  player.renderCard(containerCardsPlayer)
 
   crupier.pickCard(gameDeck)
 
@@ -71,6 +50,7 @@ const watchPunctuation = (playerObj) => {
 
 const playerPickCard = () => {
   player.pickCard(gameDeck)
+  player.renderCard(containerCardsPlayer)
   askPlayer()
 }
 
@@ -91,9 +71,6 @@ const askPlayer = (yesOrNot) => {
     console.log(`%c JUGADOR se planta con ${pointsPlayer} `, 'background:violet; color:teal')
     disabledBtn()
   } 
-  //if (answer == true && pointsPlayer < 21){
-  //  player.pickCard(gameDeck)
-  //}
 }
 
 const disabledBtn = () => {
@@ -132,7 +109,7 @@ const mostrarPuntuaciones = () => {
   console.log (`Puntuacion del jugador: ${pointsPlayer}`)
   console.log (`Puntuacion del crupier: ${pointsCrupier}`)
 
-}// ######   FUNCION DE SEGUIMIENTO    ########
+}// ######  -FIN- FUNCION DE SEGUIMIENTO    ########
 
 
 const roundGame = () => {
