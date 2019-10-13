@@ -37,6 +37,10 @@ const firstRound = () => {
   }
 }
 
+const refreshScore = (player, crupier) => {
+  pointsPlayer = watchPunctuation(player)
+  pointsCrupier = watchPunctuation(crupier)
+}
 
 //Valorar puntuación
 const watchPunctuation = (playerObj) => {
@@ -58,11 +62,8 @@ const playerPickCard = () => {
 const askPlayer = (yesOrNot) => {
   let answer = yesOrNot
   
-  console.log(`Respuesta del jugador: %c ${answer}`, 'color:orange')
-
   pointsPlayer = watchPunctuation(player)
-  roundGame()
-
+  whoIsTheWinner(pointsPlayer, pointsCrupier)
 
   if (pointsPlayer == 21) {
     console.log(`%c JUGADOR se planta por tener 21 `, 'background:black; color:white')
@@ -87,11 +88,49 @@ const notExceed21 = (playerValue) => {
   }
 }
 
-const whoIsTheWinner = (pointsPlayer, pointsCrupier) => {
+const winPlayer = (pointsPlayer, pointsCrupier) => {
   if (pointsPlayer > pointsCrupier && notExceed21(pointsPlayer)){
     console.log('%c  Gana JUGADOR con: '+ pointsPlayer, 'background:white; color: green; font-size: 12px')
+  } else {
+    console.log ('paaaaasaaaando del jugador')
   }
 }
+
+const equalScore = (pointsPlayer, pointsCrupier) => {
+  if (pointsPlayer === pointsCrupier && notExceed21(pointsPlayer)){
+    console.log('%c  EMPATE con: '+ pointsPlayer, 'background:white; color: orange; font-size: 14px')
+  } else {
+    console.log ('paaaaasaaaando del igualdades')
+  }
+}
+
+const whoIsTheWinner = (pointsPlayer, pointsCrupier) => {
+  notExceed21(pointsPlayer)
+  if (pointsPlayer === pointsCrupier){
+    console.log('%c  EMPATE con: '+ pointsPlayer, 'background:white; color: orange; font-size: 14px')
+    disabledBtn()
+  } else {
+    if (pointsPlayer > pointsCrupier){
+      console.log('%c  Gana JUGADOR con: '+ pointsPlayer, 'background:white; color: green; font-size: 12px')
+    } else {
+      console.log('%c  Gana CRUPIER con: '+ pointsPlayer, 'background:white; color: red; font-size: 12px')
+    }
+  }
+}
+
+// IA del crupier
+// - Despues de que el jugador se plane comienza su turno
+// - Si tienes menos de 16 sigue pidiendo, y con 17 se planta
+
+const crupierRound = () => {
+  while (pointsCrupier <= 17){
+    refreshScore(player, crupier)
+    crupier.pickCard(gameDeck)
+    roundGame()
+  }
+}
+
+
 
 // ######   FUNCION DE SEGUIMIENTO    ########
 const mostrarPuntuaciones = () => {
@@ -104,8 +143,6 @@ const mostrarPuntuaciones = () => {
   console.log(`Tamaño de la baraja: ${gameDeck.length}`)
   
   // Mostrar puntuación de las cartas
-  pointsPlayer = watchPunctuation(player)
-  pointsCrupier = watchPunctuation(crupier)
   console.log (`Puntuacion del jugador: ${pointsPlayer}`)
   console.log (`Puntuacion del crupier: ${pointsCrupier}`)
 
@@ -118,8 +155,10 @@ const roundGame = () => {
 
   console.log(`%c---------   SIGUIENTE RONDA   ---------`, colorGuion)
   
-  //console.log('Player')
+  console.log(`%c PLAYER `, 'color: red; font-size: 10px')
   console.table(player.hand)
+  console.log(`%c CRUPIER `, 'color: violet; font-size: 10px')
+  console.table(crupier.hand)
   
   whoIsTheWinner(pointsPlayer, pointsCrupier)
   
@@ -128,14 +167,21 @@ const roundGame = () => {
 
 firstRound()
 
+refreshScore(player, crupier)
+
+
 //test despues de preguntar
-mostrarPuntuaciones()
+
+//mostrarPuntuaciones()
 
 const getCard = () => playerPickCard()
 const passTurn = () => askPlayer(false)
 
 buttons.pedir.addEventListener('click',getCard)
 buttons.plantarse.addEventListener('click', passTurn)
+buttons.plantarse.addEventListener('click', crupierRound)
+
+//crupierRound()
 
 
 
