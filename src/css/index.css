@@ -2,17 +2,22 @@ body {
     background: lightgreen;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    
 }
 
 button {
     padding: 20px;
     font-size: 15px;
     margin-bottom:10px ;
+    transform: translateX(50%);
 }
 
 .plantarse {
     background: lightcoral;
+}
+
+.cardsPlayer{
+    transform: translateX(50%);
 }
 
 .card {

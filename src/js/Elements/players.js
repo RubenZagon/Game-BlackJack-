@@ -7,9 +7,9 @@ export class Player {
     }
 
     pickCard (gameDeck) {
-    let card = [],
-        someCard = gameDeck.pop()
-    
+    let someCard = gameDeck.pop()
+
     this.hand.push(someCard)
+    
     }
 }

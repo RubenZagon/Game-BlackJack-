@@ -28,6 +28,18 @@ const buttons = {
   plantarse: document.querySelector('.plantarse')
 }
 
+const renderCardsInHTML = (player, divContainer) => {
+  let rank = player.rank,
+      stick = player.stick,
+      div = divContainer
+  
+  for (let i = 0; i < player.length; i++){
+    let cardRenderized = new Render (rank, stick, div)
+    
+    cardRenderized.renderCard()
+  }
+}
+
 
 //Comienzo del juego
 
@@ -35,6 +47,8 @@ const firstRound = () => {
 
   player.pickCard(gameDeck)
   player.pickCard(gameDeck)
+  console.log(player)
+  renderCardsInHTML(player, containerCardsPlayer)
 
   crupier.pickCard(gameDeck)
 

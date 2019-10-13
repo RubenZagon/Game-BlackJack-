@@ -28,12 +28,3 @@ const cardIsRed = (stick, div) => {
         div.className = `card`
     }
 }
-
-/*
-
-    <div class="cardsPlayer">
-        <div class="card cardRed">2♥</div> //Tengo que construir esto
-        <div class="card ">A♠</div>
-    </div>
-
-*/
