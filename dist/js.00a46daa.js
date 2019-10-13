@@ -311,22 +311,36 @@ var deck = new _deck.Deck(),
 var player = new _players.Player(),
     crupier = new _players.Player();
 var pointsPlayer, pointsCrupier;
-var containerCardsPlayer = document.querySelector('.cardsPlayer');
+var CONTAINER = {
+  CardsPlayer: document.querySelector('.cardsPlayer'),
+  CardsCrupier: document.querySelector('.cardsCrupier')
+};
 var buttons = {
   pedir: document.querySelector('.pedir'),
   plantarse: document.querySelector('.plantarse')
+};
+var SCORE = {
+  player: document.querySelector('.pointsPlayer'),
+  crupier: document.querySelector('.pointsCrupier')
 }; //Comienzo del juego
 
 var firstRound = function firstRound() {
   player.pickCard(gameDeck);
   player.pickCard(gameDeck);
-  player.renderCard(containerCardsPlayer);
+  player.renderCard(CONTAINER.CardsPlayer);
   crupier.pickCard(gameDeck);
-  pointsPlayer = watchPunctuation(player);
+  crupier.renderCard(CONTAINER.CardsCrupier);
+  refreshScore(player, crupier);
+  printScore();
 
   if (pointsPlayer == 21) {
     askPlayer();
   }
+};
+
+var printScore = function printScore() {
+  SCORE.crupier.textContent = pointsCrupier;
+  SCORE.player.textContent = pointsPlayer;
 };
 
 var refreshScore = function refreshScore(player, crupier) {
@@ -347,7 +361,7 @@ var watchPunctuation = function watchPunctuation(playerObj) {
 
 var playerPickCard = function playerPickCard() {
   player.pickCard(gameDeck);
-  player.renderCard(containerCardsPlayer);
+  player.renderCard(CONTAINER.CardsPlayer);
   askPlayer();
 }; //Preguntar al jugador si continuar o no
 
@@ -382,23 +396,8 @@ var notExceed21 = function notExceed21(playerValue) {
   }
 };
 
-var winPlayer = function winPlayer(pointsPlayer, pointsCrupier) {
-  if (pointsPlayer > pointsCrupier && notExceed21(pointsPlayer)) {
-    console.log('%c  Gana JUGADOR con: ' + pointsPlayer, 'background:white; color: green; font-size: 12px');
-  } else {
-    console.log('paaaaasaaaando del jugador');
-  }
-};
-
-var equalScore = function equalScore(pointsPlayer, pointsCrupier) {
-  if (pointsPlayer === pointsCrupier && notExceed21(pointsPlayer)) {
-    console.log('%c  EMPATE con: ' + pointsPlayer, 'background:white; color: orange; font-size: 14px');
-  } else {
-    console.log('paaaaasaaaando del igualdades');
-  }
-};
-
 var whoIsTheWinner = function whoIsTheWinner(pointsPlayer, pointsCrupier) {
+  printScore();
   notExceed21(pointsPlayer);
 
   if (pointsPlayer === pointsCrupier) {
@@ -408,7 +407,7 @@ var whoIsTheWinner = function whoIsTheWinner(pointsPlayer, pointsCrupier) {
     if (pointsPlayer > pointsCrupier) {
       console.log('%c  Gana JUGADOR con: ' + pointsPlayer, 'background:white; color: green; font-size: 12px');
     } else {
-      console.log('%c  Gana CRUPIER con: ' + pointsPlayer, 'background:white; color: red; font-size: 12px');
+      console.log('%c  Gana CRUPIER con: ' + pointsCrupier, 'background:white; color: red; font-size: 12px');
     }
   }
 }; // IA del crupier
@@ -417,10 +416,17 @@ var whoIsTheWinner = function whoIsTheWinner(pointsPlayer, pointsCrupier) {
 
 
 var crupierRound = function crupierRound() {
-  while (pointsCrupier <= 17) {
+  for (var i = 0; pointsCrupier < 15; i++) {
     refreshScore(player, crupier);
-    crupier.pickCard(gameDeck);
-    roundGame();
+
+    if (pointsCrupier < 16) {
+      crupier.pickCard(gameDeck);
+      crupier.renderCard(CONTAINER.CardsCrupier);
+      printScore();
+    }
+
+    whoIsTheWinner(pointsPlayer, pointsCrupier);
+    roundGame(); // <- borrable
   }
 }; // ######   FUNCION DE SEGUIMIENTO    ########
 
@@ -439,7 +445,7 @@ var mostrarPuntuaciones = function mostrarPuntuaciones() {
 
 var roundGame = function roundGame() {
   var colorGuion = 'color: orange; font-size: 14px';
-  console.log("%c---------   SIGUIENTE RONDA   ---------", colorGuion);
+  console.log("%c   SIGUIENTE RONDA   ", colorGuion);
   console.log("%c PLAYER ", 'color: red; font-size: 10px');
   console.table(player.hand);
   console.log("%c CRUPIER ", 'color: violet; font-size: 10px');
@@ -447,8 +453,7 @@ var roundGame = function roundGame() {
   whoIsTheWinner(pointsPlayer, pointsCrupier);
 };
 
-firstRound();
-refreshScore(player, crupier); //test despues de preguntar
+firstRound(); //test despues de preguntar
 //mostrarPuntuaciones()
 
 var getCard = function getCard() {

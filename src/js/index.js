@@ -12,29 +12,41 @@ let player = new Player(),
 let pointsPlayer, pointsCrupier
 
 
-const containerCardsPlayer = document.querySelector('.cardsPlayer')
+const CONTAINER = {
+  CardsPlayer: document.querySelector('.cardsPlayer'),
+  CardsCrupier: document.querySelector('.cardsCrupier')
+}
 
 const buttons = {
   pedir: document.querySelector('.pedir'),
   plantarse: document.querySelector('.plantarse')
 }
 
-
+const SCORE = {
+  player: document.querySelector('.pointsPlayer'),
+  crupier: document.querySelector('.pointsCrupier')
+}
 
 //Comienzo del juego
 const firstRound = () => {
 
   player.pickCard(gameDeck)
   player.pickCard(gameDeck)
-
-  player.renderCard(containerCardsPlayer)
+  player.renderCard(CONTAINER.CardsPlayer)
 
   crupier.pickCard(gameDeck)
+  crupier.renderCard(CONTAINER.CardsCrupier)
 
-  pointsPlayer = watchPunctuation(player)
+  refreshScore(player, crupier)
+  printScore()
   if (pointsPlayer == 21){
     askPlayer()
   }
+}
+
+const printScore = () => {
+  SCORE.crupier.textContent = pointsCrupier
+  SCORE.player.textContent = pointsPlayer
 }
 
 const refreshScore = (player, crupier) => {
@@ -54,7 +66,7 @@ const watchPunctuation = (playerObj) => {
 
 const playerPickCard = () => {
   player.pickCard(gameDeck)
-  player.renderCard(containerCardsPlayer)
+  player.renderCard(CONTAINER.CardsPlayer)
   askPlayer()
 }
 
@@ -88,23 +100,8 @@ const notExceed21 = (playerValue) => {
   }
 }
 
-const winPlayer = (pointsPlayer, pointsCrupier) => {
-  if (pointsPlayer > pointsCrupier && notExceed21(pointsPlayer)){
-    console.log('%c  Gana JUGADOR con: '+ pointsPlayer, 'background:white; color: green; font-size: 12px')
-  } else {
-    console.log ('paaaaasaaaando del jugador')
-  }
-}
-
-const equalScore = (pointsPlayer, pointsCrupier) => {
-  if (pointsPlayer === pointsCrupier && notExceed21(pointsPlayer)){
-    console.log('%c  EMPATE con: '+ pointsPlayer, 'background:white; color: orange; font-size: 14px')
-  } else {
-    console.log ('paaaaasaaaando del igualdades')
-  }
-}
-
 const whoIsTheWinner = (pointsPlayer, pointsCrupier) => {
+  printScore()
   notExceed21(pointsPlayer)
   if (pointsPlayer === pointsCrupier){
     console.log('%c  EMPATE con: '+ pointsPlayer, 'background:white; color: orange; font-size: 14px')
@@ -113,7 +110,7 @@ const whoIsTheWinner = (pointsPlayer, pointsCrupier) => {
     if (pointsPlayer > pointsCrupier){
       console.log('%c  Gana JUGADOR con: '+ pointsPlayer, 'background:white; color: green; font-size: 12px')
     } else {
-      console.log('%c  Gana CRUPIER con: '+ pointsPlayer, 'background:white; color: red; font-size: 12px')
+      console.log('%c  Gana CRUPIER con: '+ pointsCrupier, 'background:white; color: red; font-size: 12px')
     }
   }
 }
@@ -123,11 +120,18 @@ const whoIsTheWinner = (pointsPlayer, pointsCrupier) => {
 // - Si tienes menos de 16 sigue pidiendo, y con 17 se planta
 
 const crupierRound = () => {
-  while (pointsCrupier <= 17){
-    refreshScore(player, crupier)
-    crupier.pickCard(gameDeck)
-    roundGame()
-  }
+
+    for (let i = 0; pointsCrupier < 15; i++){
+      refreshScore(player, crupier)
+      if (pointsCrupier < 16 ){
+      crupier.pickCard(gameDeck)
+      crupier.renderCard(CONTAINER.CardsCrupier)
+      printScore()
+      }
+      whoIsTheWinner(pointsPlayer, pointsCrupier)
+      roundGame() // <- borrable
+    }
+  
 }
 
 
@@ -153,7 +157,7 @@ const roundGame = () => {
   
   let colorGuion = 'color: orange; font-size: 14px'
 
-  console.log(`%c---------   SIGUIENTE RONDA   ---------`, colorGuion)
+  console.log(`%c   SIGUIENTE RONDA   `, colorGuion)
   
   console.log(`%c PLAYER `, 'color: red; font-size: 10px')
   console.table(player.hand)
@@ -167,7 +171,7 @@ const roundGame = () => {
 
 firstRound()
 
-refreshScore(player, crupier)
+
 
 
 //test despues de preguntar
