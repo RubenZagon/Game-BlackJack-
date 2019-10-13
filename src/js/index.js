@@ -42,9 +42,13 @@ const watchPunctuation = (playerObj) => {
   return points
 }
 
+const playerPickCard = () => {
+  player.pickCard(gameDeck)
+  askPlayer()
+}
 
 //Preguntar al jugador si continuar o no
-const askPlayer = (yesOrNot = 'no') => {
+const askPlayer = (yesOrNot) => {
   let answer = yesOrNot
   
   console.log(`Respuesta del jugador: %c ${answer}`, 'color:orange')
@@ -52,16 +56,17 @@ const askPlayer = (yesOrNot = 'no') => {
   pointsPlayer = watchPunctuation(player)
   roundGame()
 
-  if (answer === 'yes' && pointsPlayer < 21){
-    player.pickCard(gameDeck)
-    
-  } if (pointsPlayer == 21) {
+
+  if (pointsPlayer == 21) {
     console.log(`%c JUGADOR se planta por tener 21 `, 'background:black; color:white')
     disabledBtn()
-  } else {
+  } if (answer == false ) {
     console.log(`%c JUGADOR se planta con ${pointsPlayer} `, 'background:violet; color:teal')
     disabledBtn()
   } 
+  //if (answer == true && pointsPlayer < 21){
+  //  player.pickCard(gameDeck)
+  //}
 }
 
 const disabledBtn = () => {
@@ -122,8 +127,8 @@ firstRound()
 //test despues de preguntar
 mostrarPuntuaciones()
 
-const getCard = () => askPlayer('yes')
-const passTurn = () => askPlayer('no')
+const getCard = () => playerPickCard()
+const passTurn = () => askPlayer(false)
 
 buttons.pedir.addEventListener('click',getCard)
 buttons.plantarse.addEventListener('click', passTurn)
