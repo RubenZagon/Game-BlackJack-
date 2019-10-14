@@ -377,37 +377,13 @@ var askPlayer = function askPlayer(yesOrNot) {
   whoIsTheWinner(pointsPlayer, pointsCrupier);
 
   if (pointsPlayer == 21) {
-    console.log("%c JUGADOR se planta por tener 21 ", 'background:black; color:white');
     disabledBtn();
   }
 
   if (answer == false) {
-    console.log("%c JUGADOR se planta con ".concat(pointsPlayer, " "), 'background:violet; color:teal');
     disabledBtn();
   }
 };
-/*
-CREACION DE BOTONES POR JAVASCRIPT no funciona la parte de addEventListener
-
-const createButon = (className, text, ubication) => {
-  let button = document.createElement('button')
-  button.className = className
-  button.textContent = text
-  ubication.appendChild(button)
-}
-
-const addButtonsForPlayer = () =>{
-  buttons.divBotonera.innerHTML = ''
-  createButon('pedir', 'Pedir',buttons.divBotonera)
-  createButon('plantarse', 'Plantarse',buttons.divBotonera)
-}
-
-const appendReset = () => {
-  buttons.divBotonera.innerHTML = ''
-  createButon('restart', 'Volver a jugar',buttons.divBotonera)
-}
-*/
-
 
 var reload = function reload() {
   window.location.reload(false);
@@ -435,13 +411,16 @@ var whoIsTheWinner = function whoIsTheWinner(pointsPlayer, pointsCrupier) {
   printScore();
   notExceed21(pointsPlayer);
 
-  if (pointsPlayer === pointsCrupier) {
-    console.log('%c  EMPATE con: ' + pointsPlayer, 'background:white; color: orange; font-size: 14px');
+  if (pointsPlayer == 21) {
+    disabledBtn();
+  } else if (pointsPlayer === pointsCrupier) {
+    disabledBtn();
+  } else if (pointsPlayer > 21) {
     disabledBtn();
   } else if (pointsPlayer > pointsCrupier) {
-    console.log('%c  Gana JUGADOR con: ' + pointsPlayer, 'background:white; color: green; font-size: 12px');
+    disabledBtn();
   } else {
-    console.log('%c  Gana CRUPIER con: ' + pointsCrupier, 'background:white; color: red; font-size: 12px');
+    disabledBtn();
   }
 };
 
@@ -453,10 +432,12 @@ var printInHTMLTheWinner = function printInHTMLTheWinner(pointsPlayer, pointsCru
     WINNER.textContent = 'BLACKJACK';
   } else if (pPlayer === pCrupier) {
     WINNER.textContent = 'EMPATE';
-  } else if (pPlayer < pCrupier || pPlayer > 21) {
+  } else if (pPlayer > 21) {
     WINNER.textContent = 'Gana CRUPIER';
-  } else {
+  } else if (pPlayer > pCrupier) {
     WINNER.textContent = 'Gana JUGADOR';
+  } else {
+    WINNER.textContent = 'Gana CRUPIER';
   } // Imprime jugador en pantalla
 
 
@@ -521,7 +502,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49815" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61947" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
