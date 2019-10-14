@@ -306,23 +306,28 @@ var _deck = require("./Elements/deck.js");
 
 var _players = require("./Elements/players.js");
 
+// ########    VARIABLES GLOBALES   ##############
 var deck = new _deck.Deck(),
     gameDeck = deck.shuffle();
 var player = new _players.Player(),
     crupier = new _players.Player();
-var pointsPlayer, pointsCrupier;
+var pointsPlayer, pointsCrupier; // ########    SELECTORES HTML   ##############
+
 var CONTAINER = {
   CardsPlayer: document.querySelector('.cardsPlayer'),
   CardsCrupier: document.querySelector('.cardsCrupier')
 };
-var buttons = {
+var BUTTONS = {
   pedir: document.querySelector('.pedir'),
-  plantarse: document.querySelector('.plantarse')
+  plantarse: document.querySelector('.plantarse'),
+  restart: document.querySelector('.restart'),
+  divBotonera: document.querySelector('.botonera')
 };
 var SCORE = {
   player: document.querySelector('.pointsPlayer'),
   crupier: document.querySelector('.pointsCrupier')
-}; //Comienzo del juego
+};
+var WINNER = document.querySelector('.winner'); // ########    FUNCIONES   ##############
 
 var firstRound = function firstRound() {
   player.pickCard(gameDeck);
@@ -381,17 +386,47 @@ var askPlayer = function askPlayer(yesOrNot) {
     disabledBtn();
   }
 };
+/*
+CREACION DE BOTONES POR JAVASCRIPT no funciona la parte de addEventListener
+
+const createButon = (className, text, ubication) => {
+  let button = document.createElement('button')
+  button.className = className
+  button.textContent = text
+  ubication.appendChild(button)
+}
+
+const addButtonsForPlayer = () =>{
+  buttons.divBotonera.innerHTML = ''
+  createButon('pedir', 'Pedir',buttons.divBotonera)
+  createButon('plantarse', 'Plantarse',buttons.divBotonera)
+}
+
+const appendReset = () => {
+  buttons.divBotonera.innerHTML = ''
+  createButon('restart', 'Volver a jugar',buttons.divBotonera)
+}
+*/
+
+
+var reload = function reload() {
+  window.location.reload(false);
+};
 
 var disabledBtn = function disabledBtn() {
-  buttons.pedir.disabled = true;
-  buttons.plantarse.disabled = true;
+  BUTTONS.pedir.disabled = true;
+  BUTTONS.plantarse.disabled = true;
+  BUTTONS.pedir.classList.add('hidden');
+  BUTTONS.plantarse.classList.add('hidden');
+  BUTTONS.restart.classList.remove('hidden');
+  BUTTONS.restart.addEventListener('click', reload);
+  printInHTMLTheWinner(pointsPlayer, pointsCrupier);
 };
 
 var notExceed21 = function notExceed21(playerValue) {
   if (playerValue <= 21) {
     return true;
   } else {
-    console.log('%c  Pierde JUGADOR por tener:  ' + pointsPlayer, 'background:white; color: red; font-size: 12px');
     disabledBtn();
   }
 };
@@ -403,19 +438,35 @@ var whoIsTheWinner = function whoIsTheWinner(pointsPlayer, pointsCrupier) {
   if (pointsPlayer === pointsCrupier) {
     console.log('%c  EMPATE con: ' + pointsPlayer, 'background:white; color: orange; font-size: 14px');
     disabledBtn();
+  } else if (pointsPlayer > pointsCrupier) {
+    console.log('%c  Gana JUGADOR con: ' + pointsPlayer, 'background:white; color: green; font-size: 12px');
   } else {
-    if (pointsPlayer > pointsCrupier) {
-      console.log('%c  Gana JUGADOR con: ' + pointsPlayer, 'background:white; color: green; font-size: 12px');
-    } else {
-      console.log('%c  Gana CRUPIER con: ' + pointsCrupier, 'background:white; color: red; font-size: 12px');
-    }
+    console.log('%c  Gana CRUPIER con: ' + pointsCrupier, 'background:white; color: red; font-size: 12px');
   }
-}; // IA del crupier
-// - Despues de que el jugador se plane comienza su turno
-// - Si tienes menos de 16 sigue pidiendo, y con 17 se planta
+};
 
+var printInHTMLTheWinner = function printInHTMLTheWinner(pointsPlayer, pointsCrupier) {
+  var pPlayer = pointsPlayer,
+      pCrupier = pointsCrupier; //¿Quien es el ganador?
+
+  if (pPlayer == 21) {
+    WINNER.textContent = 'BLACKJACK';
+  } else if (pPlayer === pCrupier) {
+    WINNER.textContent = 'EMPATE';
+  } else if (pPlayer < pCrupier || pPlayer > 21) {
+    WINNER.textContent = 'Gana CRUPIER';
+  } else {
+    WINNER.textContent = 'Gana JUGADOR';
+  } // Imprime jugador en pantalla
+
+
+  WINNER.classList.remove('hidden');
+};
 
 var crupierRound = function crupierRound() {
+  // IA del crupier
+  // - Despues de que el jugador se plane comienza su turno
+  // - Si tienes menos de 16 sigue pidiendo, y con 17 se planta
   for (var i = 0; pointsCrupier < 15; i++) {
     refreshScore(player, crupier);
 
@@ -426,35 +477,10 @@ var crupierRound = function crupierRound() {
     }
 
     whoIsTheWinner(pointsPlayer, pointsCrupier);
-    roundGame(); // <- borrable
   }
-}; // ######   FUNCION DE SEGUIMIENTO    ########
-
-
-var mostrarPuntuaciones = function mostrarPuntuaciones() {
-  console.log('Player');
-  console.table(player.hand);
-  console.log('Crupier');
-  console.table(crupier.hand);
-  console.log("Tama\xF1o de la baraja: ".concat(gameDeck.length)); // Mostrar puntuación de las cartas
-
-  console.log("Puntuacion del jugador: ".concat(pointsPlayer));
-  console.log("Puntuacion del crupier: ".concat(pointsCrupier));
-}; // ######  -FIN- FUNCION DE SEGUIMIENTO    ########
-
-
-var roundGame = function roundGame() {
-  var colorGuion = 'color: orange; font-size: 14px';
-  console.log("%c   SIGUIENTE RONDA   ", colorGuion);
-  console.log("%c PLAYER ", 'color: red; font-size: 10px');
-  console.table(player.hand);
-  console.log("%c CRUPIER ", 'color: violet; font-size: 10px');
-  console.table(crupier.hand);
-  whoIsTheWinner(pointsPlayer, pointsCrupier);
 };
 
-firstRound(); //test despues de preguntar
-//mostrarPuntuaciones()
+firstRound();
 
 var getCard = function getCard() {
   return playerPickCard();
@@ -464,9 +490,9 @@ var passTurn = function passTurn() {
   return askPlayer(false);
 };
 
-buttons.pedir.addEventListener('click', getCard);
-buttons.plantarse.addEventListener('click', passTurn);
-buttons.plantarse.addEventListener('click', crupierRound); //crupierRound()
+BUTTONS.pedir.addEventListener('click', getCard);
+BUTTONS.plantarse.addEventListener('click', passTurn);
+BUTTONS.plantarse.addEventListener('click', crupierRound);
 },{"./Elements/deck.js":"js/Elements/deck.js","./Elements/players.js":"js/Elements/players.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';

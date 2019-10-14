@@ -2,7 +2,7 @@ import { Deck } from './Elements/deck.js';
 import { Player } from './Elements/players.js';
 
 
-
+// ########    VARIABLES GLOBALES   ##############
 let deck = new Deck(),
 gameDeck = deck.shuffle()
 
@@ -12,14 +12,17 @@ let player = new Player(),
 let pointsPlayer, pointsCrupier
 
 
+// ########    SELECTORES HTML   ##############
 const CONTAINER = {
   CardsPlayer: document.querySelector('.cardsPlayer'),
   CardsCrupier: document.querySelector('.cardsCrupier')
 }
 
-const buttons = {
+const BUTTONS = {
   pedir: document.querySelector('.pedir'),
-  plantarse: document.querySelector('.plantarse')
+  plantarse: document.querySelector('.plantarse'),
+  restart: document.querySelector('.restart'),
+  divBotonera: document.querySelector('.botonera')
 }
 
 const SCORE = {
@@ -27,7 +30,9 @@ const SCORE = {
   crupier: document.querySelector('.pointsCrupier')
 }
 
-//Comienzo del juego
+const WINNER = document.querySelector('.winner')
+
+// ########    FUNCIONES   ##############
 const firstRound = () => {
 
   player.pickCard(gameDeck)
@@ -86,16 +91,46 @@ const askPlayer = (yesOrNot) => {
   } 
 }
 
+/*
+CREACION DE BOTONES POR JAVASCRIPT no funciona la parte de addEventListener
+
+const createButon = (className, text, ubication) => {
+  let button = document.createElement('button')
+  button.className = className
+  button.textContent = text
+  ubication.appendChild(button)
+}
+
+const addButtonsForPlayer = () =>{
+  buttons.divBotonera.innerHTML = ''
+  createButon('pedir', 'Pedir',buttons.divBotonera)
+  createButon('plantarse', 'Plantarse',buttons.divBotonera)
+}
+
+const appendReset = () => {
+  buttons.divBotonera.innerHTML = ''
+  createButon('restart', 'Volver a jugar',buttons.divBotonera)
+}
+*/
+
+const reload = () => {
+  window.location.reload(false)
+}
+
 const disabledBtn = () => {
-  buttons.pedir.disabled = true;
-  buttons.plantarse.disabled = true;
+  BUTTONS.pedir.disabled = true;
+  BUTTONS.plantarse.disabled = true;
+  BUTTONS.pedir.classList.add('hidden')
+  BUTTONS.plantarse.classList.add('hidden')
+  BUTTONS.restart.classList.remove('hidden')
+  BUTTONS.restart.addEventListener('click',reload)
+  printInHTMLTheWinner(pointsPlayer, pointsCrupier)
 }
 
 const notExceed21 = (playerValue) => {
   if (playerValue <= 21){
     return true
   } else {
-    console.log('%c  Pierde JUGADOR por tener:  ' + pointsPlayer, 'background:white; color: red; font-size: 12px')
     disabledBtn()
   }
 }
@@ -106,20 +141,37 @@ const whoIsTheWinner = (pointsPlayer, pointsCrupier) => {
   if (pointsPlayer === pointsCrupier){
     console.log('%c  EMPATE con: '+ pointsPlayer, 'background:white; color: orange; font-size: 14px')
     disabledBtn()
+  } else if ((pointsPlayer > pointsCrupier)) {
+    console.log('%c  Gana JUGADOR con: '+ pointsPlayer, 'background:white; color: green; font-size: 12px')
   } else {
-    if (pointsPlayer > pointsCrupier){
-      console.log('%c  Gana JUGADOR con: '+ pointsPlayer, 'background:white; color: green; font-size: 12px')
-    } else {
-      console.log('%c  Gana CRUPIER con: '+ pointsCrupier, 'background:white; color: red; font-size: 12px')
+    console.log('%c  Gana CRUPIER con: '+ pointsCrupier, 'background:white; color: red; font-size: 12px')
     }
-  }
 }
+
+const printInHTMLTheWinner = (pointsPlayer, pointsCrupier) => {
+
+  let pPlayer = pointsPlayer,
+      pCrupier = pointsCrupier
+//¿Quien es el ganador?
+if (pPlayer == 21 ) {
+  WINNER.textContent ='BLACKJACK'
+} else if (pPlayer === pCrupier){
+  WINNER.textContent ='EMPATE'
+} else if (pPlayer < pCrupier || pPlayer > 21) {
+  WINNER.textContent ='Gana CRUPIER'
+} else {
+  WINNER.textContent ='Gana JUGADOR'
+  }
+
+// Imprime jugador en pantalla
+  WINNER.classList.remove('hidden')
+}
+
+const crupierRound = () => {
 
 // IA del crupier
 // - Despues de que el jugador se plane comienza su turno
 // - Si tienes menos de 16 sigue pidiendo, y con 17 se planta
-
-const crupierRound = () => {
 
     for (let i = 0; pointsCrupier < 15; i++){
       refreshScore(player, crupier)
@@ -129,63 +181,18 @@ const crupierRound = () => {
       printScore()
       }
       whoIsTheWinner(pointsPlayer, pointsCrupier)
-      roundGame() // <- borrable
     }
-  
 }
-
-
-
-// ######   FUNCION DE SEGUIMIENTO    ########
-const mostrarPuntuaciones = () => {
-
-  console.log('Player')
-  console.table(player.hand)
-  console.log('Crupier')
-  console.table(crupier.hand)
-  
-  console.log(`Tamaño de la baraja: ${gameDeck.length}`)
-  
-  // Mostrar puntuación de las cartas
-  console.log (`Puntuacion del jugador: ${pointsPlayer}`)
-  console.log (`Puntuacion del crupier: ${pointsCrupier}`)
-
-}// ######  -FIN- FUNCION DE SEGUIMIENTO    ########
-
-
-const roundGame = () => {
-  
-  let colorGuion = 'color: orange; font-size: 14px'
-
-  console.log(`%c   SIGUIENTE RONDA   `, colorGuion)
-  
-  console.log(`%c PLAYER `, 'color: red; font-size: 10px')
-  console.table(player.hand)
-  console.log(`%c CRUPIER `, 'color: violet; font-size: 10px')
-  console.table(crupier.hand)
-  
-  whoIsTheWinner(pointsPlayer, pointsCrupier)
-  
-}
-
 
 firstRound()
-
-
-
-
-//test despues de preguntar
-
-//mostrarPuntuaciones()
 
 const getCard = () => playerPickCard()
 const passTurn = () => askPlayer(false)
 
-buttons.pedir.addEventListener('click',getCard)
-buttons.plantarse.addEventListener('click', passTurn)
-buttons.plantarse.addEventListener('click', crupierRound)
+BUTTONS.pedir.addEventListener('click',getCard)
+BUTTONS.plantarse.addEventListener('click', passTurn)
+BUTTONS.plantarse.addEventListener('click', crupierRound)
 
-//crupierRound()
 
 
 
